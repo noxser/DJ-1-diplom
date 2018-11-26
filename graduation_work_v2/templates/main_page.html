@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<main role="main">
+
+  {% for article in articles %}
+    <div class="jumbotron">
+      <div class="container">
+        <h1 class="display-4">{{article.title}}</h1>
+        <p>{{article.text}}</p>
+      </div>
+    </div>
+    <div class="container mb-5">
+      <div class="row">
+        {% for article_items in article.display_article_items %}
+          <div class="col-md-4">
+            <h2>{{article_items.product.name}}</h2>
+            <a href="{{ article_items.product.get_absolute_url }}">
+              <img src="{{ article_items.product.image.url }}" width="180">
+            </a>
+            <form action="{% url 'cart:cart_add' article_items.product.merchandise_id %}" method="post">
+              {% csrf_token %}
+              <input type="hidden" name="merchandise_id" value="{{article_items.product.merchandise_id}}">
+              <input type="submit" class="btn btn-secondary" value="Добавить в корзину »">
+            </form>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+  {% endfor %}
+
+</main>
+{% endblock %}

@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+
+<main role="main">
+
+    <div class="container">
+        <h1>{{category}}</h1>
+
+        <div class="row">
+            {% for product in product_list %}
+                <div class="col-md-4">
+                    <h2>{{product.name}}</h2>
+                    <a href="{{product.get_absolute_url}}">
+                        <img src="{% if product.image %}
+                        {{ product.image.url }}
+                        {% else %}
+                        {% static 'img/no_image_available.png' %}
+                        {% endif %}" width="180">
+                    </a>
+                    <form action="{% url 'cart:cart_add' product.merchandise_id %}" method="post">
+                        {% csrf_token %}
+                        <input type="hidden" name="merchandise_id" value="{{product.merchandise_id}}">
+                        <input type="submit" class="btn btn-secondary" value="Добавить в корзину »">
+                    </form>
+                </div>
+            {% endfor %}
+        </div>
+
+        {% include "pagination.html" with page=product_list%}
+
+    </div>
+
+</main>
+
+{% endblock %}

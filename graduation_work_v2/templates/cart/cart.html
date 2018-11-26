@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+
+<div class="container mt-3">
+
+    <div class="row">
+        <div class="col-lg-6 col-md-9 col-sm-12 order-md-2 mb-4">
+            <h4 class="d-flex justify-content-between align-items-center mb-3">
+                <span class="text-muted">Ваша корзина</span>
+                <span class="badge badge-secondary badge-pill">{{quantity}}</span>
+            </h4>
+
+            <ul class="list-group mb-3">
+                {% for item in cart %}
+                    {% with product=item.product %}
+                    <li class="list-group-item d-flex justify-content-between lh-condensed">
+                        <div>
+                            <h6 class="my-0"><a href="{{ product.get_absolute_url }}">{{ product.name }}</a></h6>
+                            <small class="text-muted">
+                                <a href="{% url 'cart:cart_remove' product.merchandise_id %}">убрать из корзины</a>
+                            </small>
+                        </div>
+                        <span class="text-muted">{{ item.quantity }}</span>
+                    </li>
+                    {% endwith %}
+                {% endfor %}
+
+            </ul>
+            {% if request.user.is_authenticated and quantity != 0 %}
+                <form class="card p-2" action="{% url 'orders:order_create' %}" method="post">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-secondary">Заказать</button>
+                </form>
+            {% elif quantity == 0 %}
+                <form class="card p-2" action="">
+                    <button type="submit" class="btn btn-secondary disabled">Добавьте товары в корзину</button>
+                </form>
+            {% else %}
+                <form class="card p-2" action="">
+                    <button type="submit" class="btn btn-secondary disabled">Для оформления заказа авторизуйтесь</button>
+                </form>
+            {% endif%}
+
+        </div>
+    </div>
+
+</div>
+{% endblock %}
