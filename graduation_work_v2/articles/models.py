@@ -6,11 +6,11 @@ from shop.models import Product
 
 
 class Article(models.Model):
-    title = models.CharField(max_length=50)
-    text = models.TextField(blank=True)
-    created = models.DateTimeField(auto_now_add=True)
-    active_status = models.BooleanField(default=True)
-    positions = models.PositiveIntegerField(default=0)
+    title = models.CharField(max_length=50, verbose_name='Название')
+    text = models.TextField(blank=True, verbose_name='Содержание')
+    created = models.DateTimeField(auto_now_add=True, verbose_name='Дата создания')
+    active_status = models.BooleanField(default=True, verbose_name='Статус')
+    positions = models.PositiveIntegerField(default=0, verbose_name='Позиция на главной')
 
     class Meta:
         ordering = ('-created',)
@@ -29,3 +29,7 @@ class Article(models.Model):
 class ArticleItem(models.Model):
     article = models.ForeignKey(Article, related_name='article', on_delete=models.CASCADE)
     product = models.ForeignKey(Product, related_name='article_items', on_delete=models.CASCADE)
+
+    class Meta:
+        verbose_name = 'Товар'
+        verbose_name_plural = 'Товары'

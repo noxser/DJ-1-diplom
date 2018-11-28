@@ -21,7 +21,6 @@
                     </a>
                     <form action="{% url 'cart:cart_add' product.merchandise_id %}" method="post">
                         {% csrf_token %}
-                        <input type="hidden" name="merchandise_id" value="{{product.merchandise_id}}">
                         <input type="submit" class="btn btn-secondary" value="Добавить в корзину »">
                     </form>
                 </div>

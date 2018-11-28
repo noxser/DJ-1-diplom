@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth import get_user_model
 from shop.models import Product
 
 
@@ -6,12 +7,11 @@ from shop.models import Product
 
 
 class Order(models.Model):
-    username = models.CharField(max_length=50)
-    first_name = models.CharField(max_length=50)
-    last_name = models.CharField(max_length=50)
-    email = models.EmailField()
-    created = models.DateTimeField(auto_now_add=True)
-    fulfilled = models.BooleanField(default=False)
+    user = models.ForeignKey(
+        get_user_model(), on_delete=models.CASCADE, null=True, blank=True, verbose_name='Пользователь'
+    )
+    created = models.DateTimeField(auto_now_add=True, verbose_name='Дата создания')
+    fulfilled = models.BooleanField(default=False, verbose_name='Статус')
 
     class Meta:
         ordering = ('-created',)
@@ -24,10 +24,18 @@ class Order(models.Model):
         """
         return OrderItem.objects.filter(order=self.id).count()
 
-    display_num_orders.short_description = 'Количество заказов'
+    display_num_orders.short_description = 'Количество товаров'
+
+    def email_from_model(self):
+        """
+        Электронная почта
+        """
+        return self.user.email
+
+    email_from_model.short_description = 'EMAIL из модели'
 
 
 class OrderItem(models.Model):
-    order = models.ForeignKey(Order, related_name='items', on_delete=models.CASCADE)
-    product = models.ForeignKey(Product, related_name='order_items', on_delete=models.CASCADE)
-    quantity = models.PositiveIntegerField(default=0)
+    order = models.ForeignKey(Order, related_name='items', on_delete=models.CASCADE, verbose_name='Заказ')
+    product = models.ForeignKey(Product, related_name='order_items', on_delete=models.CASCADE, verbose_name='Товар')
+    quantity = models.PositiveIntegerField(default=0, verbose_name='Колличество')

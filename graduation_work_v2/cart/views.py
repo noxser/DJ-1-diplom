@@ -13,7 +13,11 @@ def cart_detail(request):
     cart = Cart(request)
     quantity = len(request.session.get('cart'))
     categories = cache.get_or_set('categories', Category.objects.all())
-    return render(request, 'cart/cart.html', {'cart': cart, 'quantity': quantity, 'categories': categories})
+    return render(request, 'cart/cart.html',
+                  {'cart': cart,
+                   'quantity': quantity,
+                   'categories': categories
+                   })
 
 
 # отработает только при POST запросе

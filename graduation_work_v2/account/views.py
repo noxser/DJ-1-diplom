@@ -16,17 +16,24 @@ def login_in(request):
         потом получить имя и авторизовать его будет проще наверное
         """
         email_auth = EmailAuthBackend()
-        user = email_auth.authenticate(username=request.POST['username'], password=request.POST['password'])
+        user = email_auth.authenticate(
+            username=request.POST['username'],
+            password=request.POST['password']
+        )
         if user is not None:
             if user.is_active:
                 login(request, user)
                 return redirect('index')
             else:
                 return render(request, 'account/login.html',
-                              {'err': 'Аккаунт отключен!', 'username': request.POST['username']})
+                              {'err': 'Аккаунт отключен!',
+                               'username': request.POST['username']
+                               })
         else:
             return render(request, 'account/login.html',
-                          {'err': 'Не верный логин или пароль!', 'username': request.POST['username']})
+                          {'err': 'Не верный логин или пароль!',
+                           'username': request.POST['username']
+                           })
     return render(request, 'account/login.html')
 
 
