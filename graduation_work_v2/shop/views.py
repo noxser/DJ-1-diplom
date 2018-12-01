@@ -1,7 +1,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from .models import Category, Product, Review
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from .forms import TestForm
+from .forms import ReviewForm
 from django.core.cache import cache
 
 
@@ -49,7 +49,7 @@ def product_detail(request, merchandise_id, category_slug):
         context['can_review_add'] = True
 
     if request.POST:
-        form = TestForm(request.POST)
+        form = ReviewForm(request.POST)
         if form.is_valid():
             has_commented_product = request.session.get('has_commented_product', [])
             if merchandise_id not in has_commented_product:
@@ -61,7 +61,7 @@ def product_detail(request, merchandise_id, category_slug):
                 request.session['has_commented_product'] = has_commented_product
                 return redirect(product.get_absolute_url())
     else:
-        context['form'] = TestForm()
+        context['form'] = ReviewForm()
 
     context['reviews'] = Review.objects.filter(product=product).order_by('created')
     return render(request, 'shop/detail_view.html', context)

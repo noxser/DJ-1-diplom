@@ -9,8 +9,8 @@ class Article(models.Model):
     title = models.CharField(max_length=50, verbose_name='Название')
     text = models.TextField(blank=True, verbose_name='Содержание')
     created = models.DateTimeField(auto_now_add=True, verbose_name='Дата создания')
-    active_status = models.BooleanField(default=True, verbose_name='Статус')
-    positions = models.PositiveIntegerField(default=0, verbose_name='Позиция на главной')
+    active_status = models.BooleanField(default=True, db_index=True, verbose_name='Статус')
+    positions = models.PositiveIntegerField(default=0, db_index=True, verbose_name='Позиция на главной')
 
     class Meta:
         ordering = ('-created',)

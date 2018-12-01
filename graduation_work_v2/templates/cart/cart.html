@@ -38,7 +38,7 @@
                     <button type="submit" class="btn btn-secondary disabled">Добавьте товары в корзину</button>
                 </form>
             {% else %}
-                <form class="card p-2" action="">
+                <form class="card p-2" action="{% url 'account:home' %}">
                     <button type="submit" class="btn btn-secondary disabled">Для оформления заказа авторизуйтесь</button>
                 </form>
             {% endif%}

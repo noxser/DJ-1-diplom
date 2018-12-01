@@ -20,19 +20,19 @@ class Order(models.Model):
 
     def display_num_orders(self):
         """
-        Считаем кол-во заказов
+        Кол-во товаров
         """
         return OrderItem.objects.filter(order=self.id).count()
 
     display_num_orders.short_description = 'Количество товаров'
 
-    def email_from_model(self):
+    def user_email(self):
         """
         Электронная почта
         """
         return self.user.email
 
-    email_from_model.short_description = 'EMAIL из модели'
+    user_email.short_description = 'Email пользователя'
 
 
 class OrderItem(models.Model):

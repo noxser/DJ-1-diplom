@@ -18,8 +18,7 @@ class OrderAdmin(admin.ModelAdmin):
     """
     # поля отображаемые при открытии списка заказов
     list_display = ['user',
-                    'email_from_model',
-                    'email_from_admin',
+                    'user_email',
                     'created',
                     'display_num_orders',
                     'fulfilled',
@@ -30,12 +29,10 @@ class OrderAdmin(admin.ModelAdmin):
     fields = ('user',
               'first_name',
               'last_name',
-              'email_from_admin',
-              'email_from_model',
+              'user_email',
               'fulfilled',
               )
-    readonly_fields = ('email_from_admin',
-                       'email_from_model',
+    readonly_fields = ('user_email',
                        'first_name',
                        'last_name'
                        )
